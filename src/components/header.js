@@ -5,10 +5,16 @@ import React from "react"
 const Header = ({ siteTitle }) => (
   <header
     style={{
-      background: `rebeccapurple`,
       marginBottom: `1.45rem`,
     }}
   >
+    <div
+      style={{
+        height: `5px`,
+        width: `100%`,
+        backgroundImage: `linear-gradient( 109.6deg,  rgba(255,207,84,1) 11.2%, rgba(255,158,27,1) 91.1% )`,
+      }}
+    ></div>
     <div
       style={{
         margin: `0 auto`,
@@ -20,7 +26,7 @@ const Header = ({ siteTitle }) => (
         <Link
           to="/"
           style={{
-            color: `white`,
+            color: `#000000`,
             textDecoration: `none`,
           }}
         >
