@@ -10,6 +10,12 @@ const FormContainer = styled.form`
   flex-direction: column;
   align-items: center;
   width: 90%;
+
+  @media only screen and (min-width: 900px) {
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 90%;
+  }
 `;
 
 const Row = styled.div`
@@ -18,12 +24,20 @@ const Row = styled.div`
   align-items: center;
   margin-bottom: 2em;
   width: 100%;
+
+  @media only screen and (min-width: 900px) {
+    margin: 0;
+  }
 `;
 const VerticalGroup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+
+  @media only screen and (min-width: 900px) {
+    width: 70%;
+  }
 `;
 
 const NumInput = styled.input`
@@ -34,6 +48,10 @@ const NumInput = styled.input`
   width: 100%;
   font-size: 1.5em;
   margin: 0.25em 0;
+
+  @media only screen and (min-width: 900px) {
+    order: 1;
+  }
 `;
 
 const Label = styled.label`

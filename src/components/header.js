@@ -6,11 +6,12 @@ const Header = ({ siteTitle }) => (
   <header
     style={{
       marginBottom: `1.45rem`,
+      width: `100%`,
     }}
   >
     <div
       style={{
-        height: `5px`,
+        height: `8px`,
         width: `100%`,
         backgroundImage: `linear-gradient( 109.6deg,  rgba(255,207,84,1) 11.2%, rgba(255,158,27,1) 91.1% )`,
       }}

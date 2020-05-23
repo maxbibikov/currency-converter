@@ -8,9 +8,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useStaticQuery, graphql } from "gatsby";
+import styled from "styled-components";
 
 import Header from "./header";
 import "./layout.css";
+
+const SiteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+`;
+
+const MainContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -24,30 +40,15 @@ const Layout = ({ children }) => {
   `);
 
   return (
-    <div
-      style={{
-        display: `flex`,
-        flexDirection: `column`,
-        justifyContent: `space-between`,
-        alignItems: `center`,
-        minHeight: `100vh`,
-      }}
-    >
+    <SiteContainer>
       <Header siteTitle={data.site.siteMetadata.title} />
-      <main
-        style={{
-          flexGrow: 1,
-          display: `flex`,
-          justifyContent: "center",
-          width: `100%`,
-        }}
-      >
-        {children}
-      </main>
+      <MainContainer>{children}</MainContainer>
       <footer style={{ textAlign: `center`, padding: `1em 0.5em` }}>
         © {new Date().getFullYear()},{" "}
-        <a href="https://maxbibikov.com">Maksym Bibikov</a>
-        {` `}
+        <a href="https://maxbibikov.com">Maksym Bibikov</a> /{" "}
+        <a href="https://github.com/maxbibikov/currency-converter">
+          Source Code
+        </a>
         <div>
           Icons made by{" "}
           <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
@@ -59,7 +60,7 @@ const Layout = ({ children }) => {
           </a>
         </div>
       </footer>
-    </div>
+    </SiteContainer>
   );
 };
 

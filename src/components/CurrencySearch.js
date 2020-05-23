@@ -9,6 +9,10 @@ const Container = styled.div`
   align-items: center;
   margin: 0.25em 0;
   width: 100%;
+
+  @media only screen and (min-width: 900px) {
+    position: relative;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -17,6 +21,18 @@ const SearchInput = styled.input`
   border: none;
   box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
   width: 100%;
+`;
+
+const SearchInputMobile = styled.input`
+  font-size: 1.5em;
+  padding: 0.5em 1em;
+  border: none;
+  box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
+  width: 100%;
+
+  @media only screen and (min-width: 900px) {
+    display: none;
+  }
 `;
 
 const DropdownList = styled.div`
@@ -33,6 +49,14 @@ const DropdownList = styled.div`
   overflow: scroll;
   z-index: 10;
   background-color: #ffffff;
+
+  @media only screen and (min-width: 900px) {
+    top: 3.5em;
+    box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
+    border: 1px solid #f0a500;
+    height: auto;
+    max-height: 300px;
+  }
 `;
 
 const CloseBtn = styled.button`
@@ -53,6 +77,10 @@ const CloseBtn = styled.button`
     width: 20px;
     height: 20px;
     margin: 0;
+  }
+
+  @media only screen and (min-width: 900px) {
+    display: none;
   }
 `;
 
@@ -85,6 +113,12 @@ export function CurrencySearch({
     setInputValue(selectedString);
   }, [selectedString]);
 
+  const onContainerBlur = event => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setDropdownVisible(false);
+    }
+  };
+
   const onCloseClick = () => {
     setDropdownVisible(false);
   };
@@ -113,7 +147,7 @@ export function CurrencySearch({
   }, [bufferSearch, valuesArr]);
 
   return (
-    <Container>
+    <Container onBlur={onContainerBlur}>
       <label htmlFor="search_input">{label}</label>
       <SearchInput
         id="search_input"
@@ -123,13 +157,14 @@ export function CurrencySearch({
         onFocus={onSearchFocus}
         onBlur={onSearchBlur}
         placeholder="Type to search..."
+        autoComplete="off"
       />
       {dropdownVisible && (
         <DropdownList>
           <CloseBtn onClick={onCloseClick}>
             <img src={crossIcon} alt="cross icon" />
           </CloseBtn>
-          <SearchInput
+          <SearchInputMobile
             id="search_input"
             type="search"
             value={inputValue}
@@ -137,6 +172,7 @@ export function CurrencySearch({
             onFocus={onSearchFocus}
             onBlur={onSearchBlur}
             placeholder="Type to search..."
+            autoComplete="off"
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={true}
           />
