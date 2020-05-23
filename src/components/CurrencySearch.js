@@ -99,19 +99,25 @@ const ListBtn = styled.button`
 `;
 
 export function CurrencySearch({
-  valuesArr,
-  selectedString,
-  setSelectedString,
-  label,
+  currencyList,
+  selectedCurrency,
+  setSelectedCurrency,
+  selectedCurrencyName,
+  setSelectedCurrencyName,
 }) {
   const [dropdownVisible, setDropdownVisible] = React.useState(false);
   const [guessValues, setGuessValues] = React.useState([]);
   const [bufferSearch, setBufferSearch] = React.useState("");
-  const [inputValue, setInputValue] = React.useState(selectedString);
+  const [inputValue, setInputValue] = React.useState(selectedCurrency);
 
+  const setCurrencyWithName = React.useCallback(() => {
+    if (selectedCurrency && selectedCurrencyName) {
+      setInputValue(`${selectedCurrency} - ${selectedCurrencyName}`);
+    }
+  }, [selectedCurrency, selectedCurrencyName]);
   React.useEffect(() => {
-    setInputValue(selectedString);
-  }, [selectedString]);
+    setCurrencyWithName();
+  }, [setCurrencyWithName]);
 
   const onContainerBlur = event => {
     if (!event.currentTarget.contains(event.relatedTarget)) {
@@ -135,20 +141,24 @@ export function CurrencySearch({
   };
 
   const onSearchBlur = () => {
-    setInputValue(selectedString);
+    setCurrencyWithName();
   };
 
   React.useEffect(() => {
-    const guessResult = valuesArr.filter(value =>
-      value.AlphabeticCode.includes(bufferSearch)
+    const guessResult = currencyList.filter(
+      value =>
+        value.AlphabeticCode.includes(bufferSearch) ||
+        value.Entity.includes(bufferSearch) ||
+        // bufferSearch value is always in upper case
+        // but Currency value is Capitalized so we convert it to uppercase
+        value.Currency.toUpperCase().includes(bufferSearch)
     );
 
     setGuessValues(guessResult);
-  }, [bufferSearch, valuesArr]);
+  }, [bufferSearch, currencyList]);
 
   return (
     <Container onBlur={onContainerBlur}>
-      <label htmlFor="search_input">{label}</label>
       <SearchInput
         id="search_input"
         type="search"
@@ -179,10 +189,11 @@ export function CurrencySearch({
           <CurrencyList>
             {guessValues.map(value => (
               <ListBtn
-                selected={value.AlphabeticCode === selectedString}
+                selected={value.AlphabeticCode === selectedCurrency}
                 key={value.AlphabeticCode}
                 onClick={() => {
-                  setSelectedString(value.AlphabeticCode);
+                  setSelectedCurrency(value.AlphabeticCode);
+                  setSelectedCurrencyName(value.Currency);
                   setDropdownVisible(false);
                 }}
               >
@@ -197,13 +208,14 @@ export function CurrencySearch({
 }
 
 CurrencySearch.propTypes = {
-  valuesArr: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  selectedString: PropTypes.string,
-  setSelectedString: PropTypes.func.isRequired,
-  label: PropTypes.string,
+  currencyList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  selectedCurrency: PropTypes.string,
+  setSelectedCurrency: PropTypes.func.isRequired,
+  selectedCurrencyName: PropTypes.string,
+  setSelectedCurrencyName: PropTypes.func.isRequired,
 };
 
 CurrencySearch.defaultProps = {
-  selectedString: "",
-  label: "",
+  selectedCurrency: "",
+  selectedCurrencyName: "",
 };

@@ -1,5 +1,13 @@
 [
   {
+    "AlphabeticCode": "EUR",
+    "Currency": "Euro",
+    "Entity": "EUROPEAN UNION",
+    "MinorUnit": "2",
+    "NumericCode": 978.0,
+    "WithdrawalDate": null
+  },
+  {
     "AlphabeticCode": "AFN",
     "Currency": "Afghani",
     "Entity": "AFGHANISTAN",
@@ -615,14 +623,7 @@
     "NumericCode": 230.0,
     "WithdrawalDate": null
   },
-  {
-    "AlphabeticCode": "EUR",
-    "Currency": "Euro",
-    "Entity": "EUROPEAN UNION",
-    "MinorUnit": "2",
-    "NumericCode": 978.0,
-    "WithdrawalDate": null
-  },
+
   {
     "AlphabeticCode": "FKP",
     "Currency": "Falkland Islands Pound",

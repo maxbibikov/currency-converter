@@ -59,15 +59,14 @@ const Label = styled.label`
   margin-bottom: 0.5em;
 `;
 
-const defaultBaseCurrency = "USD";
-const defaultTargetCurrency = "EUR";
-
 export function ConvertCurrencyForm() {
   const [exchangeData, setExchangeData] = React.useState([]);
   const [baseCurrencyAmount, setBaseCurrencyAmount] = React.useState(1);
-  const [targetCurrencyAmount, setTargetCurrencyAmount] = React.useState(0);
-  const [baseCurrency, setCurrency1] = React.useState(defaultBaseCurrency);
-  const [targetCurrency, setCurrency2] = React.useState(defaultTargetCurrency);
+  const [targetCurrencyAmount, setTargetCurrencyAmount] = React.useState("");
+  const [baseCurrency, setBaseCurrency] = React.useState("USD");
+  const [baseCurrencyName, setBaseCurrencyName] = React.useState("US Dollar");
+  const [targetCurrency, setTargetCurrency] = React.useState("EUR");
+  const [targetCurrencyName, setTargetCurrencyName] = React.useState("Euro");
   const [targetFocused, setTargetFocused] = React.useState(false);
 
   const setBaseCurrencyAmountChange = event => {
@@ -149,10 +148,6 @@ export function ConvertCurrencyForm() {
     targetFocused,
   ]);
 
-  if (!exchangeData.length > 0) {
-    return <h1 style={{ textAlign: "center" }}>Loading...</h1>;
-  }
-
   return (
     <FormContainer onSubmit={handleFormSubmit}>
       <Row>
@@ -167,9 +162,11 @@ export function ConvertCurrencyForm() {
             step={0.01}
           />
           <CurrencySearch
-            valuesArr={exchangeData}
-            setSelectedString={setCurrency1}
-            selectedString={baseCurrency}
+            currencyList={exchangeData}
+            setSelectedCurrency={setBaseCurrency}
+            selectedCurrency={baseCurrency}
+            selectedCurrencyName={baseCurrencyName}
+            setSelectedCurrencyName={setBaseCurrencyName}
           />
         </VerticalGroup>
       </Row>
@@ -177,9 +174,11 @@ export function ConvertCurrencyForm() {
         <VerticalGroup>
           <Label htmlFor="target_currency_amount">TO</Label>
           <CurrencySearch
-            valuesArr={exchangeData}
-            setSelectedString={setCurrency2}
-            selectedString={targetCurrency}
+            currencyList={exchangeData}
+            setSelectedCurrency={setTargetCurrency}
+            selectedCurrency={targetCurrency}
+            selectedCurrencyName={targetCurrencyName}
+            setSelectedCurrencyName={setTargetCurrencyName}
           />
           <NumInput
             id="target_currency_amount"
