@@ -4,11 +4,13 @@ import PropTypes from "prop-types";
 import crossIcon from "../assets/cross.svg";
 
 const Container = styled.div`
+  font-size: 1.2rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin: 0.25em 0;
   width: 100%;
+  box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
+  height: 3em;
 
   @media only screen and (min-width: 900px) {
     position: relative;
@@ -16,26 +18,22 @@ const Container = styled.div`
 `;
 
 const SearchInput = styled.input`
-  font-size: 1.5em;
-  padding: 0.5em 1em;
   border: none;
-  box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
   width: 100%;
+  height: 100%;
+  padding: 0.5em;
 `;
 
-const SearchInputMobile = styled.input`
-  font-size: 1.5em;
+const SearchInputMobile = styled(SearchInput)`
   padding: 0.5em 1em;
-  border: none;
   box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
-  width: 100%;
 
   @media only screen and (min-width: 900px) {
     display: none;
   }
 `;
 
-const DropdownList = styled.div`
+const CurrencyPicker = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -91,6 +89,8 @@ const CurrencyList = styled.div`
 `;
 
 const ListBtn = styled.button`
+  display: flex;
+  align-items: center;
   padding: 0.5em 1em;
   border: none;
   background: ${props => (props.selected ? "#dbdbdb" : "#ffffff")};
@@ -98,35 +98,64 @@ const ListBtn = styled.button`
   border-bottom: 1px solid #f0a500;
 `;
 
+const FlagIcon = styled.img`
+  width: 2em;
+  height: 2em;
+  margin: 0;
+  margin-right: 1em;
+`;
+
+const InputFlagIcon = styled(FlagIcon)`
+  margin: 0.5em;
+  display: ${props => (props.hide ? "none" : "block")};
+`;
+
 export function CurrencySearch({
   currencyList,
   selectedCurrency,
   setSelectedCurrency,
-  selectedCurrencyName,
-  setSelectedCurrencyName,
 }) {
-  const [dropdownVisible, setDropdownVisible] = React.useState(false);
+  const [currencyPickerVisible, setCurrencyPickerVisible] = React.useState(
+    false
+  );
   const [guessValues, setGuessValues] = React.useState([]);
   const [bufferSearch, setBufferSearch] = React.useState("");
   const [inputValue, setInputValue] = React.useState(selectedCurrency);
+  const [selectedCurrencyFlagUrl, setSelectedCurrencyFlagUrl] = React.useState(
+    ""
+  );
+  const [selectedCurrencyEntity, setSelectedCurrencyEntity] = React.useState(
+    ""
+  );
 
   const setCurrencyWithName = React.useCallback(() => {
-    if (selectedCurrency && selectedCurrencyName) {
-      setInputValue(`${selectedCurrency} - ${selectedCurrencyName}`);
+    if (selectedCurrency) {
+      const selectedCurrencyData = currencyList.find(
+        ({ AlphabeticCode }) => AlphabeticCode === selectedCurrency
+      );
+      if (selectedCurrencyData) {
+        setInputValue(
+          `${selectedCurrencyData.AlphabeticCode} - ${selectedCurrencyData.Currency}`
+        );
+        setSelectedCurrencyFlagUrl(selectedCurrencyData.flagIconUrl);
+        setSelectedCurrencyEntity(selectedCurrencyData.Entity);
+      }
     }
-  }, [selectedCurrency, selectedCurrencyName]);
+  }, [selectedCurrency, currencyList]);
+
   React.useEffect(() => {
     setCurrencyWithName();
   }, [setCurrencyWithName]);
 
+  // onBlur with posibility to click on this component child elements
   const onContainerBlur = event => {
     if (!event.currentTarget.contains(event.relatedTarget)) {
-      setDropdownVisible(false);
+      setCurrencyPickerVisible(false);
     }
   };
 
   const onCloseClick = () => {
-    setDropdownVisible(false);
+    setCurrencyPickerVisible(false);
   };
 
   const onSearchInput = ({ target }) => {
@@ -137,7 +166,7 @@ export function CurrencySearch({
   const onSearchFocus = () => {
     setInputValue("");
     setBufferSearch("");
-    setDropdownVisible(true);
+    setCurrencyPickerVisible(true);
   };
 
   const onSearchBlur = () => {
@@ -145,20 +174,27 @@ export function CurrencySearch({
   };
 
   React.useEffect(() => {
-    const guessResult = currencyList.filter(
-      value =>
-        value.AlphabeticCode.includes(bufferSearch) ||
-        value.Entity.includes(bufferSearch) ||
-        // bufferSearch value is always in upper case
-        // but Currency value is Capitalized so we convert it to uppercase
-        value.Currency.toUpperCase().includes(bufferSearch)
-    );
+    const guessResult =
+      currencyList.length > 0 &&
+      currencyList.filter(
+        value =>
+          value.AlphabeticCode.includes(bufferSearch) ||
+          value.Entity.includes(bufferSearch) ||
+          // bufferSearch value is always in upper case
+          // but Currency value is Capitalized so we convert it to uppercase
+          value.Currency.toUpperCase().includes(bufferSearch)
+      );
 
     setGuessValues(guessResult);
   }, [bufferSearch, currencyList]);
 
   return (
     <Container onBlur={onContainerBlur}>
+      <InputFlagIcon
+        src={selectedCurrencyFlagUrl}
+        alt={selectedCurrencyEntity}
+        hide={currencyPickerVisible}
+      />
       <SearchInput
         id="search_input"
         type="search"
@@ -169,8 +205,8 @@ export function CurrencySearch({
         placeholder="Type to search..."
         autoComplete="off"
       />
-      {dropdownVisible && (
-        <DropdownList>
+      {currencyPickerVisible && (
+        <CurrencyPicker>
           <CloseBtn onClick={onCloseClick}>
             <img src={crossIcon} alt="cross icon" />
           </CloseBtn>
@@ -193,15 +229,15 @@ export function CurrencySearch({
                 key={value.AlphabeticCode}
                 onClick={() => {
                   setSelectedCurrency(value.AlphabeticCode);
-                  setSelectedCurrencyName(value.Currency);
-                  setDropdownVisible(false);
+                  setCurrencyPickerVisible(false);
                 }}
               >
+                <FlagIcon src={value.flagIconUrl} alt={value.Entity} />
                 {`${value.AlphabeticCode} - ${value.Currency}`}
               </ListBtn>
             ))}
           </CurrencyList>
-        </DropdownList>
+        </CurrencyPicker>
       )}
     </Container>
   );
@@ -212,7 +248,6 @@ CurrencySearch.propTypes = {
   selectedCurrency: PropTypes.string,
   setSelectedCurrency: PropTypes.func.isRequired,
   selectedCurrencyName: PropTypes.string,
-  setSelectedCurrencyName: PropTypes.func.isRequired,
 };
 
 CurrencySearch.defaultProps = {

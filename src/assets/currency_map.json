@@ -42,6 +42,14 @@
   {
     "AlphabeticCode": "USD",
     "Currency": "US Dollar",
+    "Entity": "UNITED STATES OF AMERICA",
+    "MinorUnit": "2",
+    "NumericCode": 840.0,
+    "WithdrawalDate": null
+  },
+  {
+    "AlphabeticCode": "USD",
+    "Currency": "US Dollar",
     "Entity": "AMERICAN SAMOA",
     "MinorUnit": "2",
     "NumericCode": 840.0,
@@ -266,6 +274,14 @@
   {
     "AlphabeticCode": "NOK",
     "Currency": "Norwegian Krone",
+    "Entity": "NORWAY",
+    "MinorUnit": "2",
+    "NumericCode": 578.0,
+    "WithdrawalDate": null
+  },
+  {
+    "AlphabeticCode": "NOK",
+    "Currency": "Norwegian Krone",
     "Entity": "BOUVET ISLAND",
     "MinorUnit": "2",
     "NumericCode": 578.0,
@@ -458,6 +474,14 @@
   {
     "AlphabeticCode": "NZD",
     "Currency": "New Zealand Dollar",
+    "Entity": "NEW ZEALAND",
+    "MinorUnit": "2",
+    "NumericCode": 554.0,
+    "WithdrawalDate": null
+  },
+  {
+    "AlphabeticCode": "NZD",
+    "Currency": "New Zealand Dollar",
     "Entity": "COOK ISLANDS (THE)",
     "MinorUnit": "2",
     "NumericCode": 554.0,
@@ -522,7 +546,7 @@
   {
     "AlphabeticCode": "CZK",
     "Currency": "Czech Koruna",
-    "Entity": "CZECH REPUBLIC (THE)",
+    "Entity": "CZECH REPUBLIC",
     "MinorUnit": "2",
     "NumericCode": 203.0,
     "WithdrawalDate": null
@@ -787,6 +811,14 @@
   {
     "AlphabeticCode": "GBP",
     "Currency": "Pound Sterling",
+    "Entity": "UNITED KINGDOM",
+    "MinorUnit": "2",
+    "NumericCode": 826.0,
+    "WithdrawalDate": null
+  },
+  {
+    "AlphabeticCode": "GBP",
+    "Currency": "Pound Sterling",
     "Entity": "GUERNSEY",
     "MinorUnit": "2",
     "NumericCode": 826.0,
@@ -1019,7 +1051,7 @@
   {
     "AlphabeticCode": "KRW",
     "Currency": "Won",
-    "Entity": "KOREA (THE REPUBLIC OF)",
+    "Entity": "SOUTH KOREA",
     "MinorUnit": "0",
     "NumericCode": 410.0,
     "WithdrawalDate": null
@@ -1075,6 +1107,14 @@
   {
     "AlphabeticCode": "ZAR",
     "Currency": "Rand",
+    "Entity": "SOUTH AFRICA",
+    "MinorUnit": "2",
+    "NumericCode": 710.0,
+    "WithdrawalDate": null
+  },
+  {
+    "AlphabeticCode": "ZAR",
+    "Currency": "Rand",
     "Entity": "LESOTHO",
     "MinorUnit": "2",
     "NumericCode": 710.0,
@@ -1094,6 +1134,14 @@
     "Entity": "LIBYA",
     "MinorUnit": "3",
     "NumericCode": 434.0,
+    "WithdrawalDate": null
+  },
+  {
+    "AlphabeticCode": "CHF",
+    "Currency": "Swiss Franc",
+    "Entity": "SWITZERLAND",
+    "MinorUnit": "2",
+    "NumericCode": 756.0,
     "WithdrawalDate": null
   },
   {
@@ -1369,14 +1417,6 @@
     "WithdrawalDate": null
   },
   {
-    "AlphabeticCode": "NZD",
-    "Currency": "New Zealand Dollar",
-    "Entity": "NEW ZEALAND",
-    "MinorUnit": "2",
-    "NumericCode": 554.0,
-    "WithdrawalDate": null
-  },
-  {
     "AlphabeticCode": "NIO",
     "Currency": "Cordoba Oro",
     "Entity": "NICARAGUA",
@@ -1422,14 +1462,6 @@
     "Entity": "NORTHERN MARIANA ISLANDS (THE)",
     "MinorUnit": "2",
     "NumericCode": 840.0,
-    "WithdrawalDate": null
-  },
-  {
-    "AlphabeticCode": "NOK",
-    "Currency": "Norwegian Krone",
-    "Entity": "NORWAY",
-    "MinorUnit": "2",
-    "NumericCode": 578.0,
     "WithdrawalDate": null
   },
   {
@@ -1507,7 +1539,7 @@
   {
     "AlphabeticCode": "PHP",
     "Currency": "Philippine Peso",
-    "Entity": "PHILIPPINES (THE)",
+    "Entity": "PHILIPPINES",
     "MinorUnit": "2",
     "NumericCode": 608.0,
     "WithdrawalDate": null
@@ -1571,7 +1603,7 @@
   {
     "AlphabeticCode": "RUB",
     "Currency": "Russian Ruble",
-    "Entity": "RUSSIAN FEDERATION (THE)",
+    "Entity": "RUSSIAN FEDERATION",
     "MinorUnit": "2",
     "NumericCode": 643.0,
     "WithdrawalDate": null
@@ -1761,14 +1793,6 @@
     "WithdrawalDate": null
   },
   {
-    "AlphabeticCode": "ZAR",
-    "Currency": "Rand",
-    "Entity": "SOUTH AFRICA",
-    "MinorUnit": "2",
-    "NumericCode": 710.0,
-    "WithdrawalDate": null
-  },
-  {
     "AlphabeticCode": null,
     "Currency": "No universal currency",
     "Entity": "SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS",
@@ -1838,14 +1862,6 @@
     "Entity": "SWEDEN",
     "MinorUnit": "2",
     "NumericCode": 752.0,
-    "WithdrawalDate": null
-  },
-  {
-    "AlphabeticCode": "CHF",
-    "Currency": "Swiss Franc",
-    "Entity": "SWITZERLAND",
-    "MinorUnit": "2",
-    "NumericCode": 756.0,
     "WithdrawalDate": null
   },
   {
@@ -2009,25 +2025,9 @@
     "WithdrawalDate": null
   },
   {
-    "AlphabeticCode": "GBP",
-    "Currency": "Pound Sterling",
-    "Entity": "UNITED KINGDOM OF GREAT BRITAIN AND NORTHERN IRELAND (THE)",
-    "MinorUnit": "2",
-    "NumericCode": 826.0,
-    "WithdrawalDate": null
-  },
-  {
     "AlphabeticCode": "USD",
     "Currency": "US Dollar",
     "Entity": "UNITED STATES MINOR OUTLYING ISLANDS (THE)",
-    "MinorUnit": "2",
-    "NumericCode": 840.0,
-    "WithdrawalDate": null
-  },
-  {
-    "AlphabeticCode": "USD",
-    "Currency": "US Dollar",
-    "Entity": "UNITED STATES OF AMERICA (THE)",
     "MinorUnit": "2",
     "NumericCode": 840.0,
     "WithdrawalDate": null

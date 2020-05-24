@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { graphql, useStaticQuery } from "gatsby";
 import currencyInfoArr from "../assets/currency_map";
+import { toKebabLowerCase } from "../utils/toKebabLowerCase";
 
 // Components
 import { CurrencySearch } from "./CurrencySearch";
@@ -41,12 +43,13 @@ const VerticalGroup = styled.div`
 `;
 
 const NumInput = styled.input`
-  padding: 0.5em 1em;
+  height: 3em;
+  padding: 0 0.5em;
   border: none;
   box-shadow: 0px 2px 4px 0 hsla(0, 0%, 0%, 0.2);
   font-weight: bold;
   width: 100%;
-  font-size: 1.5em;
+  font-size: 1.2rem;
   margin: 0.25em 0;
 
   @media only screen and (min-width: 900px) {
@@ -55,7 +58,7 @@ const NumInput = styled.input`
 `;
 
 const Label = styled.label`
-  font-size: 1.2em;
+  font-size: 1.2rem;
   margin-bottom: 0.5em;
 `;
 
@@ -64,10 +67,25 @@ export function ConvertCurrencyForm() {
   const [baseCurrencyAmount, setBaseCurrencyAmount] = React.useState(1);
   const [targetCurrencyAmount, setTargetCurrencyAmount] = React.useState("");
   const [baseCurrency, setBaseCurrency] = React.useState("USD");
-  const [baseCurrencyName, setBaseCurrencyName] = React.useState("US Dollar");
   const [targetCurrency, setTargetCurrency] = React.useState("EUR");
-  const [targetCurrencyName, setTargetCurrencyName] = React.useState("Euro");
   const [targetFocused, setTargetFocused] = React.useState(false);
+
+  const allImagesQuery = graphql`
+    query {
+      allFile(filter: { sourceInstanceName: { eq: "flags" } }) {
+        edges {
+          node {
+            base
+            publicURL
+          }
+        }
+      }
+    }
+  `;
+
+  const {
+    allFile: { edges: flagIcons },
+  } = useStaticQuery(allImagesQuery);
 
   const setBaseCurrencyAmountChange = event => {
     setBaseCurrencyAmount(event.target.value);
@@ -91,22 +109,37 @@ export function ConvertCurrencyForm() {
           return response
             .json()
             .then(exchangeData => {
-              const withData = Object.entries(exchangeData.rates).map(
-                ([key, value]) => {
-                  const currencyData = currencyInfoArr.find(
-                    currency => currency.AlphabeticCode === key
+              const exchangeDataWithRates = Object.entries(
+                exchangeData.rates
+              ).map(([key, value]) => {
+                const currencyData = currencyInfoArr.find(
+                  currency => currency.AlphabeticCode === key
+                );
+                return { exchangeRate: value, ...currencyData };
+              });
+
+              const currencyDataWithImages = exchangeDataWithRates.map(
+                ({ Entity, ...restData }) => {
+                  const flagIcon = flagIcons.find(
+                    ({ node: { base } }) =>
+                      base === `${toKebabLowerCase(Entity)}.svg`
                   );
-                  return { exchangeRate: value, ...currencyData };
+
+                  return {
+                    Entity,
+                    ...restData,
+                    flagIconUrl: flagIcon ? flagIcon.node.publicURL : "",
+                  };
                 }
               );
-              setExchangeData(withData);
+              setExchangeData(currencyDataWithImages);
             })
             .catch(error => console.error(error));
         })
         .catch(error => console.error(error));
     }
     return () => {};
-  }, [baseCurrency]);
+  }, [baseCurrency, flagIcons]);
 
   React.useEffect(() => {
     if (exchangeData.length > 0) {
@@ -165,8 +198,6 @@ export function ConvertCurrencyForm() {
             currencyList={exchangeData}
             setSelectedCurrency={setBaseCurrency}
             selectedCurrency={baseCurrency}
-            selectedCurrencyName={baseCurrencyName}
-            setSelectedCurrencyName={setBaseCurrencyName}
           />
         </VerticalGroup>
       </Row>
@@ -177,8 +208,6 @@ export function ConvertCurrencyForm() {
             currencyList={exchangeData}
             setSelectedCurrency={setTargetCurrency}
             selectedCurrency={targetCurrency}
-            selectedCurrencyName={targetCurrencyName}
-            setSelectedCurrencyName={setTargetCurrencyName}
           />
           <NumInput
             id="target_currency_amount"
