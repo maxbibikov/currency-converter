@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { graphql, useStaticQuery } from "gatsby";
+
+// Assets
+import switchIcon from "../assets/switch.svg";
 import currencyInfoArr from "../assets/currency_map";
-import { toKebabLowerCase } from "../utils/toKebabLowerCase";
 
 // Components
 import { CurrencySearch } from "./CurrencySearch";
+import { toKebabLowerCase } from "../utils/toKebabLowerCase";
 
 const FormContainer = styled.form`
   display: flex;
@@ -16,7 +19,6 @@ const FormContainer = styled.form`
   @media only screen and (min-width: 900px) {
     flex-direction: row;
     justify-content: space-evenly;
-    width: 90%;
   }
 `;
 
@@ -31,6 +33,7 @@ const Row = styled.div`
     margin: 0;
   }
 `;
+
 const VerticalGroup = styled.div`
   display: flex;
   flex-direction: column;
@@ -40,6 +43,46 @@ const VerticalGroup = styled.div`
   @media only screen and (min-width: 900px) {
     width: 70%;
   }
+`;
+
+const SwitchBtnContainer = styled.div`
+  display: flex;
+`;
+
+const SwitchBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  margin-bottom: 2em;
+  height: 3em;
+  width: 3em;
+  background-color: #dbdbdb;
+
+  @media only screen and (min-width: 900px) {
+    transform: rotate(90deg);
+    box-shadow: 2px 0 4px 0 hsla(0, 0%, 0%, 0.2);
+    margin: 0;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    &:hover {
+      cursor: pointer;
+      background-color: #dbdbdb;
+      box-shadow: 4px 0 6px 0 hsla(0, 0%, 0%, 0.2);
+      transform: rotate(90deg) scale(1.03);
+    }
+  }
+`;
+
+const SwitchIcon = styled.img`
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0;
+  padding: 0;
 `;
 
 const NumInput = styled.input`
@@ -69,6 +112,7 @@ export function ConvertCurrencyForm() {
   const [baseCurrency, setBaseCurrency] = React.useState("USD");
   const [targetCurrency, setTargetCurrency] = React.useState("EUR");
   const [targetFocused, setTargetFocused] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const allImagesQuery = graphql`
     query {
@@ -100,6 +144,7 @@ export function ConvertCurrencyForm() {
 
   React.useEffect(() => {
     if (baseCurrency && baseCurrency.length === 3) {
+      setLoading("true");
       window
         .fetch(`https://api.exchangeratesapi.io/latest?base=${baseCurrency}`)
         .then(response => {
@@ -118,6 +163,20 @@ export function ConvertCurrencyForm() {
                 return { exchangeRate: value, ...currencyData };
               });
 
+              // Because api lacking response data for EUR base itself
+              // We need to add it manually
+              if (baseCurrency === "EUR") {
+                exchangeDataWithRates.push({
+                  AlphabeticCode: "EUR",
+                  Currency: "Euro",
+                  Entity: "EUROPEAN UNION",
+                  MinorUnit: "2",
+                  NumericCode: 978.0,
+                  WithdrawalDate: null,
+                  exchangeRate: 1,
+                });
+              }
+
               const currencyDataWithImages = exchangeDataWithRates.map(
                 ({ Entity, ...restData }) => {
                   const flagIcon = flagIcons.find(
@@ -132,11 +191,15 @@ export function ConvertCurrencyForm() {
                   };
                 }
               );
+
               setExchangeData(currencyDataWithImages);
             })
             .catch(error => console.error(error));
         })
-        .catch(error => console.error(error));
+        .catch(error => console.error(error))
+        .finally(() => {
+          setLoading(false);
+        });
     }
     return () => {};
   }, [baseCurrency, flagIcons]);
@@ -181,6 +244,15 @@ export function ConvertCurrencyForm() {
     targetFocused,
   ]);
 
+  const onSwitchClick = () => {
+    setTargetCurrency(baseCurrency);
+    setBaseCurrency(targetCurrency);
+  };
+
+  if (!exchangeData.length > 0 || loading) {
+    return <h1>Loading...</h1>;
+  }
+
   return (
     <FormContainer onSubmit={handleFormSubmit}>
       <Row>
@@ -201,6 +273,11 @@ export function ConvertCurrencyForm() {
           />
         </VerticalGroup>
       </Row>
+      <SwitchBtnContainer>
+        <SwitchBtn type="button" onClick={onSwitchClick}>
+          <SwitchIcon src={switchIcon} alt="switch currencies" />
+        </SwitchBtn>
+      </SwitchBtnContainer>
       <Row>
         <VerticalGroup>
           <Label htmlFor="target_currency_amount">TO</Label>

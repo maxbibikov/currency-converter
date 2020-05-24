@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import { useStaticQuery, graphql } from "gatsby";
 import styled from "styled-components";
 
+// Components
 import Header from "./header";
 import "./layout.css";
 
@@ -52,7 +53,13 @@ const Layout = ({ children }) => {
         <div>
           Icons made by{" "}
           <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
-            Freepik
+            Freepik,
+          </a>{" "}
+          <a
+            href="https://www.flaticon.com/authors/smartline"
+            title="Smartline"
+          >
+            Smartline
           </a>{" "}
           from{" "}
           <a href="https://www.flaticon.com/" title="Flaticon">

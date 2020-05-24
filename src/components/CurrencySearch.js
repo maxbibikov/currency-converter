@@ -25,8 +25,10 @@ const SearchInput = styled.input`
 `;
 
 const SearchInputMobile = styled(SearchInput)`
+  font-size: 1.5em;
   padding: 0.5em 1em;
   box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
+  height: 2em;
 
   @media only screen and (min-width: 900px) {
     display: none;
@@ -40,10 +42,7 @@ const CurrencyPicker = styled.div`
   height: 100vh;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  height: 100vh;
   overflow: scroll;
   z-index: 10;
   background-color: #ffffff;
@@ -63,13 +62,13 @@ const CloseBtn = styled.button`
   right: 0;
   width: 3em;
   height: 3em;
-  display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   background: none;
   margin: 0;
   padding: 0;
+  transition: transform 0.2s ease;
 
   & img {
     width: 20px;
@@ -77,6 +76,16 @@ const CloseBtn = styled.button`
     margin: 0;
   }
 
+  display: ${props => (props.visible ? "flex" : "none")};
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+`;
+
+const CloseBtnMobile = styled(CloseBtn)`
+  display: flex;
   @media only screen and (min-width: 900px) {
     display: none;
   }
@@ -96,6 +105,13 @@ const ListBtn = styled.button`
   background: ${props => (props.selected ? "#dbdbdb" : "#ffffff")};
   width: 100%;
   border-bottom: 1px solid #f0a500;
+
+  @media only screen and (min-width: 900px) {
+    &:hover {
+      background-color: #dbdbdb;
+      cursor: pointer;
+    }
+  }
 `;
 
 const FlagIcon = styled.img`
@@ -128,6 +144,12 @@ export function CurrencySearch({
     ""
   );
 
+  const searchInputRef = React.useRef(null);
+
+  const onFlagIconClick = () => {
+    searchInputRef.current.focus();
+  };
+
   const setCurrencyWithName = React.useCallback(() => {
     if (selectedCurrency) {
       const selectedCurrencyData = currencyList.find(
@@ -146,13 +168,6 @@ export function CurrencySearch({
   React.useEffect(() => {
     setCurrencyWithName();
   }, [setCurrencyWithName]);
-
-  // onBlur with posibility to click on this component child elements
-  const onContainerBlur = event => {
-    if (!event.currentTarget.contains(event.relatedTarget)) {
-      setCurrencyPickerVisible(false);
-    }
-  };
 
   const onCloseClick = () => {
     setCurrencyPickerVisible(false);
@@ -189,11 +204,12 @@ export function CurrencySearch({
   }, [bufferSearch, currencyList]);
 
   return (
-    <Container onBlur={onContainerBlur}>
+    <Container>
       <InputFlagIcon
         src={selectedCurrencyFlagUrl}
         alt={selectedCurrencyEntity}
         hide={currencyPickerVisible}
+        onClick={onFlagIconClick}
       />
       <SearchInput
         id="search_input"
@@ -204,12 +220,16 @@ export function CurrencySearch({
         onBlur={onSearchBlur}
         placeholder="Type to search..."
         autoComplete="off"
+        ref={searchInputRef}
       />
+      <CloseBtn onClick={onCloseClick} visible={currencyPickerVisible}>
+        <img src={crossIcon} alt="cross icon" />
+      </CloseBtn>
       {currencyPickerVisible && (
         <CurrencyPicker>
-          <CloseBtn onClick={onCloseClick}>
+          <CloseBtnMobile onClick={onCloseClick}>
             <img src={crossIcon} alt="cross icon" />
-          </CloseBtn>
+          </CloseBtnMobile>
           <SearchInputMobile
             id="search_input"
             type="search"
@@ -236,6 +256,9 @@ export function CurrencySearch({
                 {`${value.AlphabeticCode} - ${value.Currency}`}
               </ListBtn>
             ))}
+            {guessValues.length === 0 && (
+              <ListBtn disabled>Sorry, nothing similar found:(</ListBtn>
+            )}
           </CurrencyList>
         </CurrencyPicker>
       )}
