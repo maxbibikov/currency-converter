@@ -6,4 +6,4 @@ Currency converter app with minimalist and responsive design.
 * [React](https://reactjs.org/)
 * [Gatsby](https://www.gatsbyjs.com/)
 * [styled-components](https://styled-components.com/)
-* [Foreign exchange rates AP](https://exchangeratesapi.io/)
+* [Foreign exchange rates API](https://exchangeratesapi.io/)
