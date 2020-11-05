@@ -1,6 +1,6 @@
 ## 🧮 Online Currency Converter App
 Currency converter app with minimalist and responsive design.
-#### (DEMO)[https://mb-currency-converter.netlify.app/]
+####[DEMO](https://mb-currency-converter.netlify.app/)
 
 **Built with:
 * [React](https://reactjs.org/)
