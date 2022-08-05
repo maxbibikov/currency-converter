@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+
+// Assets
 import crossIcon from "../assets/cross.svg";
+import flagPlaceholderImg from "../assets/flag-placeholder.svg";
 
 const Container = styled.div`
   font-size: 1.2rem;
@@ -191,14 +194,26 @@ export function CurrencySearch({
   React.useEffect(() => {
     const guessResult =
       currencyList.length > 0 &&
-      currencyList.filter(
-        value =>
-          value.AlphabeticCode.includes(bufferSearch) ||
-          value.Entity.includes(bufferSearch) ||
-          // bufferSearch value is always in upper case
-          // but Currency value is Capitalized so we convert it to uppercase
+      currencyList.filter(value => {
+        if (
+          value.AlphabeticCode &&
+          value.AlphabeticCode.includes(bufferSearch)
+        ) {
+          return true;
+        }
+        if (value.Entity && value.Entity.includes(bufferSearch)) {
+          return true;
+        }
+        // bufferSearch value is always in upper case
+        // but Currency value is Capitalized so we convert it to uppercase
+        if (
+          value.Currency &&
           value.Currency.toUpperCase().includes(bufferSearch)
-      );
+        ) {
+          return true;
+        }
+        return false;
+      });
 
     setGuessValues(guessResult);
   }, [bufferSearch, currencyList]);
@@ -206,7 +221,7 @@ export function CurrencySearch({
   return (
     <Container>
       <InputFlagIcon
-        src={selectedCurrencyFlagUrl}
+        src={selectedCurrencyFlagUrl || flagPlaceholderImg}
         alt={selectedCurrencyEntity}
         hide={currencyPickerVisible}
         onClick={onFlagIconClick}
@@ -252,7 +267,10 @@ export function CurrencySearch({
                   setCurrencyPickerVisible(false);
                 }}
               >
-                <FlagIcon src={value.flagIconUrl} alt={value.Entity} />
+                <FlagIcon
+                  src={value.flagIconUrl || flagPlaceholderImg}
+                  alt={value.Entity}
+                />
                 {`${value.AlphabeticCode} - ${value.Currency}`}
               </ListBtn>
             ))}

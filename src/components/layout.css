@@ -1,10 +1,11 @@
 @font-face {
   font-family: "Oxanium-Regular";
   src: url("../fonts/Oxanium-Regular.ttf");
+  font-display: swap;
 }
 
 html {
-  font-family: "Oxanium-Regular", cursive;
+  font-family: "Oxanium-Regular", sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -206,7 +207,7 @@ html {
 }
 body {
   color: hsla(0, 0%, 0%, 0.8);
-  font-family: "Oxanium-Regular", cursive;
+  font-family: "Oxanium-Regular", sans-serif;
   font-weight: normal;
   word-wrap: break-word;
   font-kerning: normal;

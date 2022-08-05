@@ -3,7 +3,7 @@
   "private": true,
   "description": "Simple, user friendly currency converter.",
   "version": "0.1.0",
-  "author": "Maksym Bibikov <bibikovmax@gmail.com>",
+  "author": "Max <bibikovmax@gmail.com>",
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.7",
     "gatsby": "^2.21.35",

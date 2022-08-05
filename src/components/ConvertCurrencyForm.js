@@ -8,7 +8,7 @@ import currencyInfoArr from "../assets/currency_map";
 
 // Components
 import { CurrencySearch } from "./CurrencySearch";
-import { toKebabLowerCase } from "../utils/toKebabLowerCase";
+import { toKebabLowerCase, toFlagName } from "../utils/toKebabLowerCase";
 
 const FormContainer = styled.form`
   display: flex;
@@ -146,7 +146,7 @@ export function ConvertCurrencyForm() {
     if (baseCurrency && baseCurrency.length === 3) {
       setLoading("true");
       window
-        .fetch(`https://api.exchangeratesapi.io/latest?base=${baseCurrency}`)
+        .fetch(`https://api.exchangerate.host/latest?base=${baseCurrency}`)
         .then(response => {
           if (!response.ok) {
             throw Error("Currency exchange data request error!");
@@ -160,6 +160,7 @@ export function ConvertCurrencyForm() {
                 const currencyData = currencyInfoArr.find(
                   currency => currency.AlphabeticCode === key
                 );
+
                 return { exchangeRate: value, ...currencyData };
               });
 
@@ -181,7 +182,7 @@ export function ConvertCurrencyForm() {
                 ({ Entity, ...restData }) => {
                   const flagIcon = flagIcons.find(
                     ({ node: { base } }) =>
-                      base === `${toKebabLowerCase(Entity)}.svg`
+                      base === `${toKebabLowerCase(toFlagName(Entity))}.svg`
                   );
 
                   return {
@@ -221,7 +222,7 @@ export function ConvertCurrencyForm() {
           Number(targetCurrencyAmount) / Number(targetCurrencyRate);
         const targetToBaseResult = Number.isInteger(targetToBase)
           ? targetToBase
-          : Number(targetToBase.toFixed(2));
+          : Number(targetToBase.toFixed(20));
 
         setBaseCurrencyAmount(targetToBaseResult);
       } else {
@@ -230,7 +231,7 @@ export function ConvertCurrencyForm() {
           Number(baseCurrencyAmount) * Number(targetCurrencyRate);
         const baseToTargetResult = Number.isInteger(baseToTarget)
           ? baseToTarget
-          : Number(baseToTarget.toFixed(2));
+          : Number(baseToTarget.toFixed(20));
 
         setTargetCurrencyAmount(baseToTargetResult);
       }
