@@ -1,10 +1,3 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React from "react";
 import PropTypes from "prop-types";
 import { useStaticQuery, graphql } from "gatsby";
@@ -45,8 +38,7 @@ const Layout = ({ children }) => {
       <Header siteTitle={data.site.siteMetadata.title} />
       <MainContainer>{children}</MainContainer>
       <footer style={{ textAlign: `center`, padding: `1em 0.5em` }}>
-        © {new Date().getFullYear()},{" "}
-        <a href="https://maxbibikov.com">Maksym Bibikov</a> /{" "}
+        © {new Date().getFullYear()}, <a href="https://maxbibikov.com">Max</a> /{" "}
         <a href="https://github.com/maxbibikov/currency-converter">
           Source Code
         </a>
