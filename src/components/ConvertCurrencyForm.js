@@ -15,6 +15,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   align-items: center;
   width: 90%;
+  height: 100%;
 
   @media only screen and (min-width: 900px) {
     flex-direction: row;
@@ -222,7 +223,7 @@ export function ConvertCurrencyForm() {
           Number(targetCurrencyAmount) / Number(targetCurrencyRate);
         const targetToBaseResult = Number.isInteger(targetToBase)
           ? targetToBase
-          : Number(targetToBase.toFixed(20));
+          : Number(targetToBase.toFixed(5));
 
         setBaseCurrencyAmount(targetToBaseResult);
       } else {
@@ -231,7 +232,7 @@ export function ConvertCurrencyForm() {
           Number(baseCurrencyAmount) * Number(targetCurrencyRate);
         const baseToTargetResult = Number.isInteger(baseToTarget)
           ? baseToTarget
-          : Number(baseToTarget.toFixed(20));
+          : Number(baseToTarget.toFixed(5));
 
         setTargetCurrencyAmount(baseToTargetResult);
       }
@@ -251,7 +252,11 @@ export function ConvertCurrencyForm() {
   };
 
   if (!exchangeData.length > 0 || loading) {
-    return <h1>Loading...</h1>;
+    return (
+      <FormContainer>
+        <h1>Loading...</h1>
+      </FormContainer>
+    );
   }
 
   return (
@@ -265,9 +270,9 @@ export function ConvertCurrencyForm() {
             onChange={setBaseCurrencyAmountChange}
             type="number"
             min={0}
-            step={0.01}
           />
           <CurrencySearch
+            id="base_currency_search"
             currencyList={exchangeData}
             setSelectedCurrency={setBaseCurrency}
             selectedCurrency={baseCurrency}
@@ -283,6 +288,7 @@ export function ConvertCurrencyForm() {
         <VerticalGroup>
           <Label htmlFor="target_currency_amount">TO</Label>
           <CurrencySearch
+            id="target_currency_search"
             currencyList={exchangeData}
             setSelectedCurrency={setTargetCurrency}
             selectedCurrency={targetCurrency}
@@ -293,7 +299,6 @@ export function ConvertCurrencyForm() {
             onChange={setTargetCurrencyAmountChange}
             type="number"
             min={0}
-            step={0.01}
             onFocus={() => setTargetFocused(true)}
             onBlur={() => setTargetFocused(false)}
           />

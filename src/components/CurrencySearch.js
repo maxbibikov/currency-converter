@@ -130,22 +130,20 @@ const InputFlagIcon = styled(FlagIcon)`
 `;
 
 export function CurrencySearch({
+  id,
   currencyList,
   selectedCurrency,
   setSelectedCurrency,
 }) {
-  const [currencyPickerVisible, setCurrencyPickerVisible] = React.useState(
-    false
-  );
+  const [currencyPickerVisible, setCurrencyPickerVisible] =
+    React.useState(false);
   const [guessValues, setGuessValues] = React.useState([]);
   const [bufferSearch, setBufferSearch] = React.useState("");
   const [inputValue, setInputValue] = React.useState(selectedCurrency);
-  const [selectedCurrencyFlagUrl, setSelectedCurrencyFlagUrl] = React.useState(
-    ""
-  );
-  const [selectedCurrencyEntity, setSelectedCurrencyEntity] = React.useState(
-    ""
-  );
+  const [selectedCurrencyFlagUrl, setSelectedCurrencyFlagUrl] =
+    React.useState("");
+  const [selectedCurrencyEntity, setSelectedCurrencyEntity] =
+    React.useState("");
 
   const searchInputRef = React.useRef(null);
 
@@ -227,7 +225,7 @@ export function CurrencySearch({
         onClick={onFlagIconClick}
       />
       <SearchInput
-        id="search_input"
+        id={id}
         type="search"
         value={inputValue}
         onChange={onSearchInput}
@@ -246,7 +244,7 @@ export function CurrencySearch({
             <img src={crossIcon} alt="cross icon" />
           </CloseBtnMobile>
           <SearchInputMobile
-            id="search_input"
+            id={id}
             type="search"
             value={inputValue}
             onChange={onSearchInput}
@@ -285,6 +283,7 @@ export function CurrencySearch({
 }
 
 CurrencySearch.propTypes = {
+  id: PropTypes.string,
   currencyList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   selectedCurrency: PropTypes.string,
   setSelectedCurrency: PropTypes.func.isRequired,

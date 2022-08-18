@@ -1,13 +1,12 @@
 module.exports = {
   siteMetadata: {
     title: `Convert Currency`,
-    description: `Simple, user friendly currency converter.`,
-    author: `@maxbibikov`,
+    description: `Simple, fast currency converter.`,
+    lang: `en`,
   },
   plugins: [
     `gatsby-plugin-optimize-svgs`,
     `gatsby-plugin-styled-components`,
-    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -15,8 +14,9 @@ module.exports = {
         path: `${__dirname}/src/assets/flags/`,
       },
     },
-    `gatsby-transformer-sharp`,
+    `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
