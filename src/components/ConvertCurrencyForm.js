@@ -10,6 +10,11 @@ import currencyInfoArr from "../assets/currency_map";
 import { CurrencySearch } from "./CurrencySearch";
 import { toKebabLowerCase, toFlagName } from "../utils/toKebabLowerCase";
 
+// API
+const mainAPIUrl =
+  "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/";
+// const fallbackAPIUrl = "https://latest.currency-api.pages.dev/v1/currencies/";
+
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
@@ -147,7 +152,7 @@ export function ConvertCurrencyForm() {
     if (baseCurrency && baseCurrency.length === 3) {
       setLoading("true");
       window
-        .fetch(`https://api.exchangerate.host/latest?base=${baseCurrency}`)
+        .fetch(`${mainAPIUrl}${baseCurrency.toLocaleLowerCase()}.min.json`)
         .then(response => {
           if (!response.ok) {
             throw Error("Currency exchange data request error!");
@@ -156,29 +161,13 @@ export function ConvertCurrencyForm() {
             .json()
             .then(exchangeData => {
               const exchangeDataWithRates = Object.entries(
-                exchangeData.rates
+                exchangeData[baseCurrency.toLocaleLowerCase()]
               ).map(([key, value]) => {
                 const currencyData = currencyInfoArr.find(
-                  currency => currency.AlphabeticCode === key
+                  currency => currency.AlphabeticCode === key.toUpperCase()
                 );
-
                 return { exchangeRate: value, ...currencyData };
               });
-
-              // Because api lacking response data for EUR base itself
-              // We need to add it manually
-              if (baseCurrency === "EUR") {
-                exchangeDataWithRates.push({
-                  AlphabeticCode: "EUR",
-                  Currency: "Euro",
-                  Entity: "EUROPEAN UNION",
-                  MinorUnit: "2",
-                  NumericCode: 978.0,
-                  WithdrawalDate: null,
-                  exchangeRate: 1,
-                });
-              }
-
               const currencyDataWithImages = exchangeDataWithRates.map(
                 ({ Entity, ...restData }) => {
                   const flagIcon = flagIcons.find(
